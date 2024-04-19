@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.mascotapp.core.entities.Post;
@@ -15,7 +15,7 @@ public class FacebookPetDataProviderTest {
 
     private PetDataProvider petDataProvider;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         petDataProvider = new FacebookPetDataProvider();
     }
