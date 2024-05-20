@@ -3,14 +3,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.mascotapp.core.entities.Post;
-import com.mascotapp.core.service.dataprovider.PetDataProvider;
+import com.mascotapp.core.service.socialNetwork.SocialNetwork;
 
-public class FacebookPetDataProvider implements PetDataProvider {
+public class FacebookSocialNetwork implements SocialNetwork {
 	
 	private Set<Post> foundPets;
 	private Set<Post> lostPets;
 	
-	public FacebookPetDataProvider() {
+	public FacebookSocialNetwork() {
         Set<Post> founds = new HashSet<>();
         Set<Post> losts = new HashSet<>();
 
@@ -31,6 +31,11 @@ public class FacebookPetDataProvider implements PetDataProvider {
 	@Override
 	public Set<Post> getFoundPets() {
 		return foundPets;
+	}
+
+	@Override
+	public String getName() {
+		return "Facebook Social Network";
 	}
 
 }

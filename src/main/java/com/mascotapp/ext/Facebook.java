@@ -3,9 +3,9 @@ package com.mascotapp.ext;
 import java.util.HashSet;
 import java.util.Set;
 import com.mascotapp.core.entities.Post;
-import com.mascotapp.core.service.dataprovider.PetDataProvider;
+import com.mascotapp.core.service.socialNetwork.SocialNetwork;
 
-public class Facebook implements PetDataProvider {
+public class Facebook implements SocialNetwork {
 	
 	private Set<Post> foundPets;
 	private Set<Post> lostPets;
@@ -39,5 +39,10 @@ public class Facebook implements PetDataProvider {
 	@Override
 	public Set<Post> getFoundPets() {
 		return foundPets;
+	}
+
+	@Override
+	public String getName() {
+		return "Facebook";
 	}
 }

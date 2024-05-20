@@ -9,27 +9,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.mascotapp.core.entities.Post;
-import com.mascotapp.core.service.dataprovider.PetDataProvider;
+import com.mascotapp.core.service.socialNetwork.SocialNetwork;
 
 public class FacebookPetDataProviderTest {
 
-    private PetDataProvider petDataProvider;
+    private SocialNetwork socialNetwork;
 
     @BeforeEach
     public void setUp() {
-        petDataProvider = new FacebookPetDataProvider();
+    	socialNetwork = new FacebookSocialNetwork();
     }
 
     @Test
     public void testGetLostPets() {
-        Set<Post> lostPets = petDataProvider.getLostPets();
+        Set<Post> lostPets = socialNetwork.getLostPets();
         assertNotNull(lostPets);
         assertEquals(2, lostPets.size()); // Assuming you've added 2 lost pets in the constructor
     }
 
     @Test
     public void testGetFoundPets() {
-        Set<Post> foundPets = petDataProvider.getFoundPets();
+        Set<Post> foundPets = socialNetwork.getFoundPets();
         assertNotNull(foundPets);
         assertEquals(1, foundPets.size()); // Assuming you've added 1 found pet in the constructor
     }
