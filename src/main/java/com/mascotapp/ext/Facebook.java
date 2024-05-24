@@ -16,11 +16,9 @@ public class Facebook implements SocialNetwork {
 
 		losts.add(new Post("perdí a mi caniche", "https://www.facebook.com/posts/164026166"));
 		losts.add(new Post("perdi mi perro labrador", "https://www.facebook.com/posts/1654397464"));
-		losts.add(new Post("perdí un gatito negro", "https://www.facebook.com/posts/1394259383"));
 		losts.add(new Post("Ayer a las 22hs se escapó mi perro Rocky", "https://www.facebook.com/posts/172024136"));
 		losts.add(new Post("estoy buscando a mi caniche blanco perdido", "https://www.facebook.com/posts/16272773"));
 		
-		founds.add(new Post("vi un gato siames", "https://www.facebook.com/posts/191267009"));
         founds.add(new Post("se encontró un perro labrador", "https://www.facebook.com/posts/161893467"));
         founds.add(new Post("encontre un perro mestizo", "https://www.facebook.com/posts/165097290"));
         founds.add(new Post("encontre un perro caniche color blanco", "https://www.facebook.com/posts/13280141"));
