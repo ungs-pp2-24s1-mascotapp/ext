@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.mascotapp.core.entities.Post;
 import com.mascotapp.core.service.socialNetwork.SocialNetwork;
 
-public class FacebookWithDynamicData implements SocialNetwork {
+public class FacebookWithDynamicData extends SocialNetwork {
 	
-	private int fetchFoundCount = 0;
-	private int fetchLostCount = 0;
-	
-	private Set<Post> foundPets;
-	private Set<Post> lostPets;
-	
+	private Set<Post> posts;
+
 	private List<Post> allFoundPets;
 	private List<Post> allLostPets;
+	private List<Post> allPosts;
+	
+	private int postsIndex = 0;
 	
 	public FacebookWithDynamicData() {
-		foundPets = new HashSet<>();
-		lostPets = new HashSet<>();
+		posts = new HashSet<>();
         
 		allFoundPets = new ArrayList<>();
 		allLostPets = new ArrayList<>();
@@ -37,40 +37,38 @@ public class FacebookWithDynamicData implements SocialNetwork {
         allLostPets.add(new Post("perdi mi perro labrador", "https://www.facebook.com/posts/1654397464"));
         allLostPets.add(new Post("Ayer a las 22hs se escapó mi perro Rocky", "https://www.facebook.com/posts/172024136"));
         allLostPets.add(new Post("estoy buscando a mi golden retriever", "https://www.facebook.com/posts/16272773"));
-	}
-	
-	@Override
-	public Set<Post> getFoundPets() {
-		Set<Post> data = new HashSet<>(foundPets);
-		
-		if(fetchFoundCount >= allFoundPets.size()) {
-			foundPets.clear();
-			fetchFoundCount = 0;
-		} else {
-			foundPets.add(allFoundPets.get(fetchFoundCount));
-			fetchFoundCount++;
-		}
-		
-		return data;
-	}
-
-	@Override
-	public Set<Post> getLostPets() {
-		Set<Post> data = new HashSet<>(lostPets);
-		
-		if(fetchLostCount >= allLostPets.size()) {
-			lostPets.clear();
-			fetchLostCount = 0;
-		} else {
-			lostPets.add(allLostPets.get(fetchLostCount));
-			fetchLostCount++;
-		}
-		
-		return data;
+        
+        allPosts.addAll(allFoundPets);
+        allPosts.addAll(allLostPets);
+        
+        startNotificationProcess();
 	}
 
 	@Override
 	public String getName() {
 		return "Facebook";
 	}
+
+	@Override
+	public Set<Post> getPosts() {
+		return posts;
+	}
+	
+	private void startNotificationProcess() {
+        Timer timer = new Timer(true); // Daemon thread
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                notifyNews(postsIndex);
+                postsIndex++;
+            }
+        }, 0, 5000); // 0 delay, 5000ms period
+    }
+	
+	private void notifyNews(int index) {
+		if(index < allPosts.size()) {
+			this.notifyNewPost(this.allPosts.get(index));
+		}
+    }
+	
 }

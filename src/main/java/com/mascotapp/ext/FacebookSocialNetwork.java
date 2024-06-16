@@ -5,7 +5,7 @@ import java.util.Set;
 import com.mascotapp.core.entities.Post;
 import com.mascotapp.core.service.socialNetwork.SocialNetwork;
 
-public class FacebookSocialNetwork implements SocialNetwork {
+public class FacebookSocialNetwork extends SocialNetwork {
 	
 	private Set<Post> foundPets;
 	private Set<Post> lostPets;
@@ -24,18 +24,16 @@ public class FacebookSocialNetwork implements SocialNetwork {
 	}
 
 	@Override
-	public Set<Post> getLostPets() {
-		return lostPets;
-	}
-
-	@Override
-	public Set<Post> getFoundPets() {
-		return foundPets;
-	}
-
-	@Override
 	public String getName() {
 		return "Facebook Social Network";
+	}
+
+	@Override
+	public Set<Post> getPosts() {
+		Set<Post> posts = new HashSet<>();
+		posts.addAll(foundPets);
+		posts.addAll(lostPets);
+		return posts;
 	}
 
 }

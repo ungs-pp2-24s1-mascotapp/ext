@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.mascotapp.core.entities.Post;
 import com.mascotapp.core.service.socialNetwork.SocialNetwork;
 
-public class InstagramWithDynamicData implements SocialNetwork {
+public class InstagramWithDynamicData extends SocialNetwork {
 	
-	private int fetchFoundCount = 0;
-	private int fetchLostCount = 0;
-	
-	private Set<Post> foundPets;
-	private Set<Post> lostPets;
-	
+	private Set<Post> posts;
+
 	private List<Post> allFoundPets;
 	private List<Post> allLostPets;
+	private List<Post> allPosts;
+	
+	private int postsIndex = 0;
 	
 	public InstagramWithDynamicData() {
-		foundPets = new HashSet<>();
-		lostPets = new HashSet<>();
+		posts = new HashSet<>();
         
 		allFoundPets = new ArrayList<>();
 		allLostPets = new ArrayList<>();
@@ -33,39 +33,37 @@ public class InstagramWithDynamicData implements SocialNetwork {
 		allFoundPets.add(new Post("vi un gato siames en la peatonal", "https://www.instagram.com/posts/1912667009"));
 		allFoundPets.add(new Post("aparecio en mi casa este gatito siames que se llama luna", "https://www.instagram.com/posts/1912667010"));
 		allFoundPets.add(new Post("vi un gatito negro en la estación de San Miguel", "https://www.instagram.com/posts/142502269"));
-	}
-
-	public Set<Post> getFoundPets() {
-		Set<Post> data = new HashSet<>(foundPets);
 		
-		if(fetchFoundCount >= allFoundPets.size()) {
-			foundPets.clear();
-			fetchFoundCount = 0;
-		} else {
-			foundPets.add(allFoundPets.get(fetchFoundCount));
-			fetchFoundCount++;
-		}
-		
-		return data;
-	}
-	
-	@Override
-	public Set<Post> getLostPets() {
-		Set<Post> data = new HashSet<>(lostPets);
-		
-		if(fetchLostCount >= allLostPets.size()) {
-			lostPets.clear();
-			fetchLostCount = 0;
-		} else {
-			lostPets.add(allLostPets.get(fetchLostCount));
-			fetchLostCount++;
-		}
-		
-		return data;
+		allPosts.addAll(allFoundPets);
+        allPosts.addAll(allLostPets);
+        
+        startNotificationProcess();
 	}
 
 	@Override
 	public String getName() {
 		return "Instagram";
 	}
+
+	@Override
+	public Set<Post> getPosts() {
+		return posts;
+	}
+	
+	private void startNotificationProcess() {
+        Timer timer = new Timer(true); // Daemon thread
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                notifyNews(postsIndex);
+                postsIndex++;
+            }
+        }, 0, 10000); // 0 delay, 10000ms period
+    }
+	
+	private void notifyNews(int index) {
+		if(index < allPosts.size()) {
+			this.notifyNewPost(this.allPosts.get(index));
+		}
+    }
 }
